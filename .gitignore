@@ -1,38 +1,25 @@
-# Python
-__pycache__/
-*.py[cod]
-*$py.class
-*.pyo
-*.pyd
-.Python
-
-# Virtual environments
-.venv/
-venv/
-ENV/
-env/
-
-# Packaging / build
-build/
+# Node / frontend
+node_modules/
 dist/
-*.egg-info/
-.eggs/
+coverage/
+*.tsbuildinfo
 
-# Test / coverage
-.pytest_cache/
-.coverage
-.coverage.*
-htmlcov/
-.mypy_cache/
-.ruff_cache/
+# Env files
+.env
+.env.*
 
-# FastAPI / ASGI
+# Logs
 *.log
-*.pid
 
 # IDEs / editors
 .idea/
 .vscode/
+
+# Python env leftovers
+.venv/
+venv/
+ENV/
+env/
 
 # OS files
 .DS_Store
