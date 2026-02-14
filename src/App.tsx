@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState, type PointerEvent } from "react";
 
 const achievements = [
   {
@@ -115,15 +115,200 @@ const teachers = [
   "Акура Шуту",
 ];
 
-const reviews = [
-  "Курс помог перейти на первую работу junior-разработчиком.",
-  "Понравилось, что много практики и разборы с преподавателем.",
-  "Материал структурирован, легко совмещать с работой.",
+type ReviewStory = {
+  slug: string;
+  name: string;
+  course: string;
+  quote: string;
+  path: string;
+  image: string;
+  details: string[];
+};
+
+const reviewStories: ReviewStory[] = [
+  {
+    slug: "nikita",
+    name: "Никита",
+    course: "Бухгалтер",
+    quote:
+      "Если встретить правильного преподавателя и пройти по протоптанной дорожке — и работа найдётся, и с отчётами всё сложится.",
+    path: "Из маркетплейсов → в бухгалтерию",
+    image: "/image/office_hourse.jpg",
+    details: [
+      "Я пришел на курс без технического бэкграунда и сначала было сложно с новой терминологией.",
+      "Наставник помог выстроить понятный маршрут: короткие задачи каждую неделю, регулярная проверка и разбор ошибок.",
+      "Через несколько месяцев я собрал портфолио и прошел собеседование на новую позицию.",
+    ],
+  },
+  {
+    slug: "anastasia",
+    name: "Анастасия",
+    course: "Бизнес-аналитик",
+    quote:
+      "Если вы хотите и правда поменять свою жизнь в лучшую сторону, не откладывайте.",
+    path: "Из ПВЗ Lamoda → в бизнес-аналитику",
+    image: "/image/python_image_course.png",
+    details: [
+      "На старте мне не хватало структуры и уверенности, поэтому я постоянно откладывала обучение.",
+      "После перехода на понятный план обучения и еженедельные созвоны с куратором прогресс стал стабильным.",
+      "Итог — реальные кейсы в портфолио, уверенность в инструментах аналитика и переход в новую профессию.",
+    ],
+  },
+  {
+    slug: "sergey",
+    name: "Сергей",
+    course: "Python-разработчик",
+    quote:
+      "Самое полезное в обучении — ежедневная практика и быстрые разборы с наставником.",
+    path: "Из техподдержки → в разработку",
+    image: "/image/python_image_course.png",
+    details: [
+      "Я совмещал обучение с работой, поэтому важно было получать быстрый фидбек, а не ждать неделями.",
+      "Удобный график и разборы кода помогли закрыть пробелы по Python и алгоритмам.",
+      "После учебного проекта меня пригласили на стажировку, где я продолжил развиваться уже в команде.",
+    ],
+  },
+  {
+    slug: "ekaterina",
+    name: "Екатерина",
+    course: "Data-аналитик",
+    quote:
+      "Курс дал уверенность и структуру: я быстро собрала портфолио и вышла на собеседования.",
+    path: "Из HR → в аналитику данных",
+    image: "/image/office_hourse.jpg",
+    details: [
+      "Раньше я работала с людьми, но хотела перейти в data-направление и не понимала, с чего начать.",
+      "Программа с практикой на реальных задачах помогла освоить SQL, BI-инструменты и логику метрик.",
+      "С готовым портфолио я начала проходить интервью и получила оффер в аналитическую команду.",
+    ],
+  },
 ];
+
+const REVIEWS_TRACK_GAP = 18;
+
+function getReviewSlugFromPath(pathname: string): string | null {
+  const match = pathname.match(/^\/reviews\/([^/]+)\/?$/);
+  return match?.[1] ?? null;
+}
 
 function App() {
   const [audience, setAudience] = useState<"adult" | "kids">("adult");
+  const [reviewIndex, setReviewIndex] = useState(0);
+  const [reviewsPerView, setReviewsPerView] = useState(2);
+  const [dragStartX, setDragStartX] = useState<number | null>(null);
+  const [activeReviewSlug, setActiveReviewSlug] = useState<string | null>(() =>
+    getReviewSlugFromPath(window.location.pathname),
+  );
+  const suppressReviewClickRef = useRef(false);
   const isAdult = audience === "adult";
+  const maxReviewIndex = Math.max(reviewStories.length - reviewsPerView, 0);
+  const reviewSlideWidth = `calc((100% - ${(reviewsPerView - 1) * REVIEWS_TRACK_GAP}px) / ${reviewsPerView})`;
+  const reviewShiftPercent = (100 / reviewsPerView) * reviewIndex;
+  const reviewShiftGap = (REVIEWS_TRACK_GAP / reviewsPerView) * reviewIndex;
+  const activeReview = activeReviewSlug
+    ? reviewStories.find((story) => story.slug === activeReviewSlug)
+    : null;
+
+  useEffect(() => {
+    const updatePerView = () => {
+      setReviewsPerView(window.innerWidth < 980 ? 1 : 2);
+    };
+
+    updatePerView();
+    window.addEventListener("resize", updatePerView);
+    return () => window.removeEventListener("resize", updatePerView);
+  }, []);
+
+  useEffect(() => {
+    setReviewIndex((prev) => Math.min(prev, maxReviewIndex));
+  }, [maxReviewIndex]);
+
+  useEffect(() => {
+    const handlePopState = () => {
+      setActiveReviewSlug(getReviewSlugFromPath(window.location.pathname));
+    };
+
+    window.addEventListener("popstate", handlePopState);
+    return () => window.removeEventListener("popstate", handlePopState);
+  }, []);
+
+  const goPrevReview = () => {
+    setReviewIndex((prev) => (prev === 0 ? maxReviewIndex : prev - 1));
+  };
+
+  const goNextReview = () => {
+    setReviewIndex((prev) => (prev >= maxReviewIndex ? 0 : prev + 1));
+  };
+
+  const handleReviewsPointerDown = (event: PointerEvent<HTMLDivElement>) => {
+    event.currentTarget.setPointerCapture(event.pointerId);
+    setDragStartX(event.clientX);
+    suppressReviewClickRef.current = false;
+  };
+
+  const handleReviewsPointerUp = (event: PointerEvent<HTMLDivElement>) => {
+    if (dragStartX === null) {
+      return;
+    }
+
+    const deltaX = event.clientX - dragStartX;
+    if (deltaX > 50) {
+      goPrevReview();
+      suppressReviewClickRef.current = true;
+    } else if (deltaX < -50) {
+      goNextReview();
+      suppressReviewClickRef.current = true;
+    }
+
+    setDragStartX(null);
+  };
+
+  const openReviewDetails = (slug: string) => {
+    if (suppressReviewClickRef.current) {
+      suppressReviewClickRef.current = false;
+      return;
+    }
+
+    window.history.pushState({}, "", `/reviews/${slug}`);
+    setActiveReviewSlug(slug);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  const closeReviewDetails = () => {
+    window.history.pushState({}, "", "/");
+    setActiveReviewSlug(null);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  if (activeReview) {
+    return (
+      <div className="site">
+        <main className="section panel review-details-page">
+          <button type="button" className="review-back-btn" onClick={closeReviewDetails}>
+            ← Назад к отзывам
+          </button>
+
+          <article className="review-details-card">
+            <div
+              className="review-details-cover"
+              style={{
+                backgroundImage: `linear-gradient(90deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.05)), url("${activeReview.image}")`,
+              }}
+            />
+            <div className="review-details-content">
+              <div className="review-label">{activeReview.name}</div>
+              <h1>{activeReview.course}</h1>
+              <p className="review-details-quote">“{activeReview.quote}”</p>
+              {activeReview.details.map((paragraph) => (
+                <p key={paragraph}>{paragraph}</p>
+              ))}
+              <div className="review-path">{activeReview.path}</div>
+            </div>
+          </article>
+        </main>
+      </div>
+    );
+  }
 
   return (
     <div className={`site ${isAdult ? "audience-adult" : "audience-kids"}`}>
@@ -299,12 +484,89 @@ function App() {
 
             <div className="panel-block" id="reviews">
               <h2>Отзывы</h2>
-              <div className="review-grid">
-                {reviews.map((review) => (
-                  <article className="review-card" key={review}>
-                    <p>{review}</p>
-                  </article>
-                ))}
+              <div className="reviews-showcase">
+                <div className="reviews-top">
+                  <div className="orbit-ring ring-1" />
+                  <div className="orbit-ring ring-2" />
+                  <div className="orbit-ring ring-3" />
+
+                  <div className="review-avatar av-1" />
+                  <div className="review-avatar av-2" />
+                  <div className="review-avatar av-3" />
+                  <div className="review-avatar av-4" />
+                  <div className="review-avatar av-5" />
+                  <div className="review-avatar av-6" />
+                  <div className="review-avatar av-7" />
+
+                  <div className="reviews-center">
+                    <div className="reviews-percent">91%</div>
+                    <p>студентов довольны своими результатами</p>
+                  </div>
+                </div>
+
+                <div
+                  className="reviews-slider"
+                  onPointerDown={handleReviewsPointerDown}
+                  onPointerUp={handleReviewsPointerUp}
+                  onPointerCancel={() => setDragStartX(null)}
+                >
+                  <div
+                    className="reviews-track"
+                    style={{
+                      ["--reviews-track-gap" as string]: `${REVIEWS_TRACK_GAP}px`,
+                      transform: `translateX(calc(-${reviewShiftPercent}% - ${reviewShiftGap}px))`,
+                    }}
+                  >
+                    {reviewStories.map((story) => (
+                      <article
+                        className="review-story"
+                        key={story.slug}
+                        role="button"
+                        tabIndex={0}
+                        onClick={() => openReviewDetails(story.slug)}
+                        onKeyDown={(event) => {
+                          if (event.key === "Enter" || event.key === " ") {
+                            event.preventDefault();
+                            openReviewDetails(story.slug);
+                          }
+                        }}
+                        style={{
+                          flex: `0 0 ${reviewSlideWidth}`,
+                          maxWidth: reviewSlideWidth,
+                          backgroundImage: `linear-gradient(90deg, rgba(255, 255, 255, 0.96) 0%, rgba(255, 255, 255, 0.84) 56%, rgba(255, 255, 255, 0.16) 100%), url("${story.image}")`,
+                        }}
+                      >
+                        <div className="review-head">
+                          <div className="review-label">{story.name}</div>
+                          <div className="review-course">
+                            Выпускник курса <span>{story.course}</span>
+                          </div>
+                        </div>
+                        <p>{story.quote}</p>
+                        <div className="review-path">{story.path}</div>
+                      </article>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="reviews-controls">
+                  <button
+                    className="reviews-control-btn"
+                    type="button"
+                    onClick={goPrevReview}
+                    aria-label="Предыдущий отзыв"
+                  >
+                    ‹
+                  </button>
+                  <button
+                    className="reviews-control-btn"
+                    type="button"
+                    onClick={goNextReview}
+                    aria-label="Следующий отзыв"
+                  >
+                    ›
+                  </button>
+                </div>
               </div>
             </div>
 
