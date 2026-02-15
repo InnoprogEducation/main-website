@@ -122,6 +122,9 @@ type ReviewStory = {
   quote: string;
   path: string;
   image: string;
+  title: string;
+  lead: string;
+  facts: { label: string; value: string }[];
   details: string[];
 };
 
@@ -134,6 +137,14 @@ const reviewStories: ReviewStory[] = [
       "Если встретить правильного преподавателя и пройти по протоптанной дорожке — и работа найдётся, и с отчётами всё сложится.",
     path: "Из маркетплейсов → в бухгалтерию",
     image: "/image/office_hourse.jpg",
+    title: "Как Никита перешел из маркетплейсов в бухгалтерию",
+    lead: "История о системном обучении, поддержке наставника и быстром карьерном переходе.",
+    facts: [
+      { label: "Город", value: "Москва" },
+      { label: "Формат", value: "Онлайн + разборы 1:1" },
+      { label: "Срок", value: "10 месяцев" },
+      { label: "Результат", value: "Новая работа по специальности" },
+    ],
     details: [
       "Я пришел на курс без технического бэкграунда и сначала было сложно с новой терминологией.",
       "Наставник помог выстроить понятный маршрут: короткие задачи каждую неделю, регулярная проверка и разбор ошибок.",
@@ -148,6 +159,14 @@ const reviewStories: ReviewStory[] = [
       "Если вы хотите и правда поменять свою жизнь в лучшую сторону, не откладывайте.",
     path: "Из ПВЗ Lamoda → в бизнес-аналитику",
     image: "/image/python_image_course.png",
+    title: "Как Анастасия сменила профессию на бизнес-аналитику",
+    lead: "Переход из операционной работы в аналитику с фокусом на практику и портфолио.",
+    facts: [
+      { label: "Город", value: "Санкт-Петербург" },
+      { label: "Формат", value: "Онлайн, 2 занятия в неделю" },
+      { label: "Срок", value: "10 месяцев" },
+      { label: "Результат", value: "Оффер на junior-позицию" },
+    ],
     details: [
       "На старте мне не хватало структуры и уверенности, поэтому я постоянно откладывала обучение.",
       "После перехода на понятный план обучения и еженедельные созвоны с куратором прогресс стал стабильным.",
@@ -162,6 +181,14 @@ const reviewStories: ReviewStory[] = [
       "Самое полезное в обучении — ежедневная практика и быстрые разборы с наставником.",
     path: "Из техподдержки → в разработку",
     image: "/image/python_image_course.png",
+    title: "Как Сергей перешел из техподдержки в Python-разработку",
+    lead: "Пошаговый рост через практические задания и проверку кода от наставника.",
+    facts: [
+      { label: "Город", value: "Казань" },
+      { label: "Формат", value: "Вечерние занятия" },
+      { label: "Срок", value: "10 месяцев" },
+      { label: "Результат", value: "Стажировка в продуктовой команде" },
+    ],
     details: [
       "Я совмещал обучение с работой, поэтому важно было получать быстрый фидбек, а не ждать неделями.",
       "Удобный график и разборы кода помогли закрыть пробелы по Python и алгоритмам.",
@@ -176,6 +203,14 @@ const reviewStories: ReviewStory[] = [
       "Курс дал уверенность и структуру: я быстро собрала портфолио и вышла на собеседования.",
     path: "Из HR → в аналитику данных",
     image: "/image/office_hourse.jpg",
+    title: "Как Екатерина перешла из HR в Data-аналитику",
+    lead: "История о смене трека, дисциплине и первых собеседованиях в новой роли.",
+    facts: [
+      { label: "Город", value: "Екатеринбург" },
+      { label: "Формат", value: "Онлайн + домашние проекты" },
+      { label: "Срок", value: "10 месяцев" },
+      { label: "Результат", value: "Переход в аналитическую команду" },
+    ],
     details: [
       "Раньше я работала с людьми, но хотела перейти в data-направление и не понимала, с чего начать.",
       "Программа с практикой на реальных задачах помогла освоить SQL, BI-инструменты и логику метрик.",
@@ -196,10 +231,12 @@ function App() {
   const [reviewIndex, setReviewIndex] = useState(0);
   const [reviewsPerView, setReviewsPerView] = useState(2);
   const [dragStartX, setDragStartX] = useState<number | null>(null);
+  const [consentAccepted, setConsentAccepted] = useState(false);
   const [activeReviewSlug, setActiveReviewSlug] = useState<string | null>(() =>
     getReviewSlugFromPath(window.location.pathname),
   );
   const suppressReviewClickRef = useRef(false);
+  const shouldScrollToReviewsRef = useRef(false);
   const isAdult = audience === "adult";
   const maxReviewIndex = Math.max(reviewStories.length - reviewsPerView, 0);
   const reviewSlideWidth = `calc((100% - ${(reviewsPerView - 1) * REVIEWS_TRACK_GAP}px) / ${reviewsPerView})`;
@@ -231,6 +268,15 @@ function App() {
     window.addEventListener("popstate", handlePopState);
     return () => window.removeEventListener("popstate", handlePopState);
   }, []);
+
+  useEffect(() => {
+    if (activeReviewSlug === null && shouldScrollToReviewsRef.current) {
+      shouldScrollToReviewsRef.current = false;
+      requestAnimationFrame(() => {
+        document.getElementById("reviews")?.scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+    }
+  }, [activeReviewSlug]);
 
   const goPrevReview = () => {
     setReviewIndex((prev) => (prev === 0 ? maxReviewIndex : prev - 1));
@@ -276,35 +322,116 @@ function App() {
 
   const closeReviewDetails = () => {
     window.history.pushState({}, "", "/");
+    shouldScrollToReviewsRef.current = true;
     setActiveReviewSlug(null);
-    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   if (activeReview) {
+    const relatedStories = reviewStories.filter((story) => story.slug !== activeReview.slug).slice(0, 4);
+
     return (
       <div className="site">
-        <main className="section panel review-details-page">
-          <button type="button" className="review-back-btn" onClick={closeReviewDetails}>
-            ← Назад к отзывам
-          </button>
+        <main className="section panel review-story-page">
+          <div className="review-story-topnav">
+            <button type="button" className="review-back-btn" onClick={closeReviewDetails}>
+              ← Назад к отзывам
+            </button>
+            <div className="review-story-breadcrumbs">Главная / Истории / {activeReview.name}</div>
+          </div>
 
-          <article className="review-details-card">
+          <header className="review-story-hero">
+            <div className="review-story-copy">
+              <div className="review-label">{activeReview.name}</div>
+              <h1>{activeReview.title}</h1>
+              <p>{activeReview.lead}</p>
+              <div className="review-story-course">Курс: {activeReview.course}</div>
+            </div>
             <div
-              className="review-details-cover"
+              className="review-story-cover"
               style={{
-                backgroundImage: `linear-gradient(90deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.05)), url("${activeReview.image}")`,
+                backgroundImage: `linear-gradient(90deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.06)), url("${activeReview.image}")`,
               }}
             />
-            <div className="review-details-content">
-              <div className="review-label">{activeReview.name}</div>
-              <h1>{activeReview.course}</h1>
-              <p className="review-details-quote">“{activeReview.quote}”</p>
-              {activeReview.details.map((paragraph) => (
-                <p key={paragraph}>{paragraph}</p>
+          </header>
+
+          <section className="review-story-grid">
+            <aside className="review-story-facts">
+              <h3>Кратко о результате</h3>
+              {activeReview.facts.map((fact) => (
+                <div className="review-story-fact" key={fact.label}>
+                  <span>{fact.label}</span>
+                  <strong>{fact.value}</strong>
+                </div>
               ))}
+
+              <div className="review-story-side-cta">
+                <h4>Хотите такой же переход в IT?</h4>
+                <p>Подберем траекторию обучения и план с наставником под ваш график.</p>
+                <button type="button" className="accent-button">
+                  Получить консультацию
+                </button>
+              </div>
+            </aside>
+
+            <article className="review-story-article">
+              <blockquote>“{activeReview.quote}”</blockquote>
+
+              <section className="story-section">
+                <h2>Как начался переход</h2>
+                <p>{activeReview.details[0]}</p>
+              </section>
+
+              <section className="story-section">
+                <h2>Как проходило обучение</h2>
+                <p>{activeReview.details[1]}</p>
+              </section>
+
+              <section className="story-section">
+                <h2>Какой результат получился</h2>
+                <p>{activeReview.details[2]}</p>
+              </section>
+
+              <section className="review-story-promo">
+                <h3>Попробуйте себя в новой профессии бесплатно</h3>
+                <p>
+                  Получите вводный план по профессии, первый практический кейс и рекомендации по
+                  развитию навыков.
+                </p>
+              </section>
+
               <div className="review-path">{activeReview.path}</div>
+              <button type="button" className="accent-button review-story-cta">
+                Хочу такой же результат
+              </button>
+            </article>
+          </section>
+
+          <section className="review-story-more">
+            <h2>Другие истории</h2>
+            <div className="review-story-more-grid">
+              {relatedStories.map((story) => (
+                <article
+                  key={story.slug}
+                  className="review-story-more-card"
+                  role="button"
+                  tabIndex={0}
+                  onClick={() => openReviewDetails(story.slug)}
+                  onKeyDown={(event) => {
+                    if (event.key === "Enter" || event.key === " ") {
+                      event.preventDefault();
+                      openReviewDetails(story.slug);
+                    }
+                  }}
+                >
+                  <div
+                    className="review-story-more-cover"
+                    style={{ backgroundImage: `url("${story.image}")` }}
+                  />
+                  <h3>{story.title}</h3>
+                </article>
+              ))}
             </div>
-          </article>
+          </section>
         </main>
       </div>
     );
@@ -571,28 +698,87 @@ function App() {
             </div>
 
             <div className="panel-block compare">
-              <h2>Выбор за тобой</h2>
-              <p>Изучать самому по видео или заниматься еженедельно с преподавателем.</p>
+              <div className="compare-grid">
+                <article className="compare-side">
+                  <div className="compare-image compare-image-left" />
+                  <h3>Изучать курсы по видеороликам самостоятельно</h3>
+                </article>
+
+                <div className="compare-vs">VS</div>
+
+                <article className="compare-side">
+                  <div className="compare-image compare-image-right" />
+                  <h3>Еженедельные занятия с преподавателями</h3>
+                </article>
+              </div>
+
+              <div className="compare-choice">
+                <span aria-hidden="true">😐</span>
+                <h2>Выбор за тобой</h2>
+                <span aria-hidden="true">😁</span>
+              </div>
             </div>
 
             <div className="panel-block cta">
-              <form className="lead-form">
+              <form
+                className="lead-form"
+                onSubmit={(event) => {
+                  event.preventDefault();
+                  if (!consentAccepted) {
+                    return;
+                  }
+                }}
+              >
                 <h3>Заявка на обучение</h3>
+                <p className="lead-caption">
+                  Оставьте <span>заявку</span>, и мы <span>свяжемся</span> с Вами в ближайшее время
+                </p>
                 <input type="text" placeholder="Ваше имя" />
-                <input type="tel" placeholder="+7 (___) ___-__-__" />
-                <button className="accent-button" type="submit">
+                <div className="phone-field">
+                  <span className="phone-flag" aria-hidden="true">
+                    🇷🇺
+                  </span>
+                  <input type="tel" placeholder="+7 (000) 000-00-00" />
+                </div>
+                <button className="lead-submit" type="submit" disabled={!consentAccepted}>
                   Отправить
                 </button>
+                <label className="consent-row">
+                  <input
+                    type="checkbox"
+                    checked={consentAccepted}
+                    onChange={(event) => setConsentAccepted(event.target.checked)}
+                  />
+                  <span>
+                    Нажимая на кнопку, вы даете согласие на обработку персональных данных и
+                    соглашаетесь с <a href="#">политикой конфиденциальности</a>
+                  </span>
+                </label>
               </form>
-              <article className="price-card">
-                <h3>Стоимость обучения</h3>
-                <p className="price">7 250 руб/мес</p>
-                <ul>
-                  <li>4 занятия в месяц</li>
-                  <li>Проверка домашней работы</li>
-                  <li>Персональная программа</li>
-                </ul>
-              </article>
+
+              <div className="price-column">
+                <article className="price-card">
+                  <div className="price-badge">-27%</div>
+                  <h3>Стоимость обучения</h3>
+                  <p className="price-old">9 990 руб/мес.</p>
+                  <p className="price">7 250 руб/мес.</p>
+                  <p className="price-gift">+ 2 занятия в подарок 🎁</p>
+                </article>
+
+                <article className="price-benefits">
+                  <ul>
+                    <li>
+                      Онлайн занятия с опытными преподавателями <strong>1 на 1</strong>
+                    </li>
+                    <li>
+                      Погружение ребенка в <strong>IT-профессию</strong>
+                    </li>
+                    <li>
+                      <strong>Гарантируем результат</strong> или мы вернем вам деньги
+                    </li>
+                  </ul>
+                </article>
+              </div>
             </div>
           </>
         ) : (
@@ -604,13 +790,65 @@ function App() {
       </section>
 
       <footer className="footer section">
-        <div>
-          <strong>INNOPROG</strong>
-          <p>Школа программирования</p>
+        <div className="footer-col footer-brand">
+          <img className="footer-logo" src="/image/logo_innoprog_white.png" alt="INNOPROG Education" />
+          <div className="footer-socials" aria-label="Социальные сети">
+            <a href="tel:+79586067980" aria-label="Телефон">
+              ☎
+            </a>
+            <a href="mailto:education@innoprog.ru" aria-label="Почта">
+              ✉
+            </a>
+            <a href="https://t.me/innoprog_admin" target="_blank" rel="noreferrer" aria-label="Telegram">
+              ↗
+            </a>
+            <a href="https://wa.me/79586067980" target="_blank" rel="noreferrer" aria-label="WhatsApp">
+              ◉
+            </a>
+          </div>
+          <p>
+            Общество с ограниченной ответственностью "ИННОПРОГ"
+            <br />
+            ИНН 1683011286 ОГРН 1221600105440
+          </p>
         </div>
-        <div>
-          <p>+7 (999) 123-45-67</p>
-          <p>hello@innoprog.ru</p>
+
+        <div className="footer-col">
+          <h4>Контакты</h4>
+          <p>Тел: +7 (958) 606-79-80</p>
+          <p>Email: education@innoprog.ru</p>
+          <p>Telegram: @innoprog_admin</p>
+        </div>
+
+        <div className="footer-col">
+          <h4>Адрес</h4>
+          <p>420500 Республика Татарстан, Верхнеуслонский р-он,</p>
+          <p>г. Иннополис, ул. Университетская, д.5, пом.115, м.15/2</p>
+        </div>
+
+        <div className="footer-col">
+          <h4>Правовая информация</h4>
+          <a
+            href="https://api.innoprog.ru/files/documents/contract_offer.pdf"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Договор оферты
+          </a>
+          <a
+            href="https://api.innoprog.ru/files/documents/privacy_policy.pdf"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Политика конфиденциальности
+          </a>
+          <a
+            href="https://api.innoprog.ru/files/documents/license.pdf"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Выписка из реестра лицензий на образовательную деятельность
+          </a>
         </div>
       </footer>
     </div>
