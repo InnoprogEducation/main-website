@@ -1126,7 +1126,10 @@ function App() {
                 <button type="button" className="direction-hero-cta-primary">
                   <span>Записаться со скидкой</span>
                   <span className="direction-hero-cta-arrow" aria-hidden="true">
-                    ↗
+                    <svg viewBox="0 0 24 24" focusable="false">
+                      <path d="M7 17 17 7" />
+                      <path d="M9 7h8v8" />
+                    </svg>
                   </span>
                 </button>
                 <button type="button" className="direction-hero-cta-secondary">
@@ -1363,7 +1366,9 @@ function App() {
                 aria-label="Предыдущий проект"
                 onClick={() => scrollDirectionProjects(-1)}
               >
-                ‹
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="m14 6-6 6 6 6" />
+                </svg>
               </button>
               <button
                 type="button"
@@ -1371,7 +1376,9 @@ function App() {
                 aria-label="Следующий проект"
                 onClick={() => scrollDirectionProjects(1)}
               >
-                ›
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="m10 6 6 6-6 6" />
+                </svg>
               </button>
             </div>
           </section>
@@ -1499,12 +1506,17 @@ function App() {
                       <span>
                         {index + 1}. {module.title}
                       </span>
-                      <span className="direction-program-chevron" aria-hidden="true">
-                        {isOpen ? "⌃" : "⌄"}
+                      <span
+                        className={`direction-program-chevron ${isOpen ? "is-open" : ""}`}
+                        aria-hidden="true"
+                      >
+                        <svg viewBox="0 0 24 24" focusable="false">
+                          <path d="m6 9 6 6 6-6" />
+                        </svg>
                       </span>
                     </button>
 
-                    {isOpen ? (
+                    <div className={`direction-program-item-body-wrap ${isOpen ? "is-open" : ""}`}>
                       <div className="direction-program-item-body">
                         <p>{module.lead}</p>
                         <div className="direction-program-points">
@@ -1525,7 +1537,7 @@ function App() {
                           <span>38 теоретических материалов</span>
                         </div>
                       </div>
-                    ) : null}
+                    </div>
                   </article>
                 );
               })}
@@ -1770,11 +1782,11 @@ function App() {
                       onClick={() => toggleDirectionFaqItem(index)}
                     >
                       <span>{item.question}</span>
-                      <span className="direction-faq-toggle" aria-hidden="true">
-                        {isOpen ? "−" : "+"}
-                      </span>
+                      <span className={`direction-faq-toggle ${isOpen ? "is-open" : ""}`} aria-hidden="true" />
                     </button>
-                    {isOpen ? <div className="direction-faq-answer">{item.answer}</div> : null}
+                    <div className={`direction-faq-answer-wrap ${isOpen ? "is-open" : ""}`}>
+                      <div className="direction-faq-answer">{item.answer}</div>
+                    </div>
                   </article>
                 );
               })}
