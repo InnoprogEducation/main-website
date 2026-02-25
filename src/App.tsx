@@ -743,7 +743,6 @@ function App() {
   const [isResumeModalOpen, setIsResumeModalOpen] = useState(false);
   const [openProgramModuleIndex, setOpenProgramModuleIndex] = useState(0);
   const [openDirectionFaqIndexes, setOpenDirectionFaqIndexes] = useState<number[]>([]);
-  const [directionCompanyPay, setDirectionCompanyPay] = useState(false);
   const [directionConsent, setDirectionConsent] = useState(false);
   const suppressReviewClickRef = useRef(false);
   const shouldScrollToReviewsRef = useRef(false);
@@ -1142,7 +1141,7 @@ function App() {
               <div className="direction-hero-license">
                 <img
                   className="direction-hero-license-logo"
-                  src="/image/min_logo.png"
+                  src="/image/gerb.png"
                   alt=""
                   aria-hidden="true"
                 />
@@ -1739,15 +1738,6 @@ function App() {
               <label>
                 <span>Ваш вопрос</span>
                 <input type="text" placeholder="Напишите ваш вопрос" />
-              </label>
-
-              <label className="direction-lead-checkbox">
-                <input
-                  type="checkbox"
-                  checked={directionCompanyPay}
-                  onChange={(event) => setDirectionCompanyPay(event.target.checked)}
-                />
-                <span>Оплатить от компании</span>
               </label>
 
               <label className="direction-lead-checkbox">
