@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700;800&display=swap");
+
 :root {
   --bg: #ffffff;
   --text: #0c0c10;
@@ -12,7 +14,7 @@
   --radius-md: 16px;
   --max: 1600px;
   --header-text-size: 14px;
-  font-family: "Space Grotesk", "Manrope", "Segoe UI", sans-serif;
+  font-family: "Onest", "Manrope", "Segoe UI", sans-serif;
 }
 
 * {
@@ -28,6 +30,10 @@ body,
 
 body {
   color: var(--text);
+  font-family: inherit;
+  font-weight: 500;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
 a {
@@ -1684,6 +1690,41 @@ a {
   right: 4%;
   bottom: 22%;
   background-image: url("/image/office_hourse.jpg");
+}
+
+/* Unified typography for landing blocks */
+.learning-panel .panel-block h2 {
+  font-size: clamp(40px, 3.8vw, 64px) !important;
+  line-height: 1.08 !important;
+}
+
+.learning-panel .panel-block h3 {
+  font-size: clamp(28px, 2.5vw, 42px) !important;
+  line-height: 1.14 !important;
+}
+
+.learning-panel .panel-block p,
+.learning-panel .panel-block li,
+.learning-panel .panel-block a {
+  font-size: clamp(18px, 1.3vw, 26px) !important;
+  line-height: 1.34 !important;
+}
+
+/* preserve intentionally large display text */
+.reviews-percent {
+  font-size: clamp(86px, 8vw, 150px) !important;
+}
+
+.compare-vs {
+  font-size: clamp(84px, 10vw, 220px) !important;
+}
+
+.compare-choice h2 {
+  font-size: clamp(66px, 7.4vw, 140px) !important;
+}
+
+.price {
+  font-size: clamp(44px, 3.6vw, 68px) !important;
 }
 
 @media (max-width: 1024px) {
