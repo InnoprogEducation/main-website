@@ -1,101 +1,5 @@
 import { useEffect, useRef, useState, type PointerEvent } from "react";
 
-const achievements = [
-  {
-    icon: "study",
-    title: "Индивидуальные занятия",
-    text: "с преподавателями каждую неделю",
-  },
-  {
-    icon: "briefcase",
-    title: "Стажировка в IT-компании",
-    text: "с последующим трудоустройством по окончании курса",
-  },
-  {
-    icon: "help",
-    title: "Поддержка 24/7",
-    text: "преподавателей, отвечаем в течение 1 часа",
-  },
-  {
-    icon: "code",
-    title: "Наши преподаватели",
-    text: "это опытные программисты из IT-компаний",
-  },
-  {
-    icon: "award",
-    title: "После обучения получите",
-    text: "диплом о профессиональной переподготовке",
-  },
-  {
-    icon: "terminal",
-    title: "Создадите 18 проектов",
-    text: "для портфолио: сайты, приложения, боты",
-  },
-];
-
-function AchievementIcon({ kind }: { kind: string }) {
-  if (kind === "study") {
-    return (
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M4 6.5h16v11H4z" />
-        <path d="M7.5 4h9" />
-        <path d="M8 11h8" />
-        <path d="M8 14h5" />
-      </svg>
-    );
-  }
-
-  if (kind === "briefcase") {
-    return (
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <rect x="3.5" y="7" width="17" height="11.5" rx="2.5" />
-        <path d="M9 7V5.8A1.8 1.8 0 0 1 10.8 4h2.4A1.8 1.8 0 0 1 15 5.8V7" />
-        <path d="M3.5 12h17" />
-        <path d="M10.8 10.8h2.4v2.4h-2.4z" />
-      </svg>
-    );
-  }
-
-  if (kind === "help") {
-    return (
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M12 3.5a8 8 0 1 1-4.2 14.8L5.2 20l.4-3a8 8 0 0 1 6.4-13.5z" />
-        <path d="M10 9a2.4 2.4 0 1 1 3.8 1.9c-.6.4-1.3.9-1.3 1.8" />
-        <path d="M12 16.1h.01" />
-      </svg>
-    );
-  }
-
-  if (kind === "code") {
-    return (
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <path d="m8.5 7.5-4.5 4.5 4.5 4.5" />
-        <path d="m15.5 7.5 4.5 4.5-4.5 4.5" />
-        <path d="M12 5.5 10 18.5" />
-      </svg>
-    );
-  }
-
-  if (kind === "award") {
-    return (
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <circle cx="12" cy="8.8" r="4.6" />
-        <path d="m12 6.7.8 1.6h1.8l-1.4 1.1.5 1.8-1.7-1-1.7 1 .5-1.8-1.4-1.1h1.8z" />
-        <path d="M8.8 13.5V20l3.2-1.6L15.2 20v-6.5" />
-      </svg>
-    );
-  }
-
-  return (
-    <svg viewBox="0 0 24 24" aria-hidden="true">
-      <rect x="3" y="5" width="18" height="14" rx="2.2" />
-      <path d="M6.5 8.5h11" />
-      <path d="m8.5 12.5 2.2 2.2-2.2 2.2" />
-      <path d="M13 16.9h4" />
-    </svg>
-  );
-}
-
 function FooterSocialIcon({ kind }: { kind: "phone" | "mail" | "telegram" | "whatsapp" }) {
   if (kind === "phone") {
     return (
@@ -1236,6 +1140,12 @@ function App() {
               специалистам.
             </p>
 
+            <img
+              className="direction-mentor-photo"
+              src="/image/office_hourse.jpg"
+              alt="Ментор на индивидуальной консультации"
+            />
+
             <h3>Вас ждёт 126 индивидуальных онлайн-встреч:</h3>
 
             <div className="direction-mentor-cards">
@@ -1450,6 +1360,29 @@ function App() {
                   </div>
                 </article>
               ))}
+            </div>
+          </section>
+
+          <section className="direction-certificates">
+            <div className="cert-layout">
+              <article className="cert-copy">
+                <h3>После обучения вы получите:</h3>
+                <p>
+                  Удостоверение о повышении квалификации или диплом о профпереподготовке
+                  установленного образца и
+                  <span> официальный диплом Академии ИННОПРОГ:</span> они подтвердят вашу
+                  квалификацию и помогут в трудоустройстве.
+                </p>
+              </article>
+
+              <div className="cert-media" aria-hidden="true">
+                <div className="diploma-card diploma-card-blue">
+                  <img className="diploma-image" src="/image/diplom_prof.png" alt="ИННОПРОГ ДИПЛОМ" />
+                </div>
+                <div className="diploma-card diploma-card-white">
+                  <img className="diploma-image" src="/image/diplom.png" alt="Диплом" />
+                </div>
+              </div>
             </div>
           </section>
 
@@ -1872,26 +1805,22 @@ function App() {
       <section className="section panel learning-panel">
         <div className="intro-blocks panel-block">
           <div className="hero" id="about">
-            <h1>INNOPROG</h1>
+            <h1>ИННОПРОГ</h1>
             <p>Обучение программированию с фокусом на практику и результат</p>
           </div>
-
-          <div className="achievements">
-            <div className="benefits">
-              {achievements.map((benefit) => (
-                <article className="achievement-card" key={benefit.title}>
-                  <span className="achievement-icon" aria-hidden="true">
-                    <AchievementIcon kind={benefit.icon} />
-                  </span>
-                  <div>
-                    <h3>{benefit.title}</h3>
-                    <p>{benefit.text}</p>
-                  </div>
-                </article>
-              ))}
-            </div>
-          </div>
         </div>
+
+        <section className="panel-block direction-benefits-grid">
+          {directionBenefits.map((item) => (
+            <article className="direction-benefit-card" key={`main-${item.title}`}>
+              <h3>{item.title}</h3>
+              <p>{item.text}</p>
+              <div className="direction-benefit-icon">
+                <DirectionBenefitIcon kind={item.icon} />
+              </div>
+            </article>
+          ))}
+        </section>
 
         <div className="tabs">
           <button
@@ -1906,7 +1835,7 @@ function App() {
             type="button"
             onClick={() => setAudience("kids")}
           >
-            Для детей
+            Для детей и подростков
           </button>
         </div>
 
@@ -1942,13 +1871,160 @@ function App() {
               </div>
             </div>
 
-            <div className="panel-block split">
-              <div>
-                <h2>Индивидуальные занятия</h2>
-                <p>С действующими разработчиками и персональным планом развития.</p>
+            <section className="panel-block direction-mentor-section">
+              <div className="direction-mentor-cloud direction-mentor-cloud-left-top">
+                Уверенный выход на работу
               </div>
-              <div className="code-preview" />
-            </div>
+              <div className="direction-mentor-cloud direction-mentor-cloud-right-top">
+                Разбор кейсов
+              </div>
+              <div className="direction-mentor-cloud direction-mentor-cloud-left-mid">
+                Сильное резюме
+              </div>
+              <div className="direction-mentor-cloud direction-mentor-cloud-right-mid">
+                Подготовка к собеседованию
+              </div>
+              <div className="direction-mentor-cloud direction-mentor-cloud-left-bottom">
+                Индивидуальный маршрут
+              </div>
+              <div className="direction-mentor-cloud direction-mentor-cloud-right-bottom">Поддержка</div>
+
+              <div className="direction-mentor-pro">Тариф PRO</div>
+
+              <h2>Личный ментор на всём пути обучения</h2>
+              <p>
+                Вас будет сопровождать эксперт из индустрии, который помог многим начинающим
+                специалистам.
+              </p>
+
+              <img
+                className="direction-mentor-photo"
+                src="/image/office_hourse.jpg"
+                alt="Ментор на индивидуальной консультации"
+              />
+
+              <h3>Вас ждёт 126 индивидуальных онлайн-встреч:</h3>
+
+              <div className="direction-mentor-cards">
+                <article className="direction-mentor-card">
+                  <img
+                    className="direction-mentor-icon-svg"
+                    src="https://api.iconify.design/tabler:player-play-filled.svg?color=%239c78ff"
+                    alt=""
+                    aria-hidden="true"
+                  />
+                  <p>2 консультации по ходу обучения</p>
+                </article>
+                <article className="direction-mentor-card">
+                  <img
+                    className="direction-mentor-icon-svg"
+                    src="https://api.iconify.design/tabler:chart-line.svg?color=%239c78ff"
+                    alt=""
+                    aria-hidden="true"
+                  />
+                  <p>Карьерная сессия с разбором резюме</p>
+                </article>
+                <article className="direction-mentor-card">
+                  <img
+                    className="direction-mentor-icon-svg"
+                    src="https://api.iconify.design/tabler:user-square-rounded.svg?color=%239c78ff"
+                    alt=""
+                    aria-hidden="true"
+                  />
+                  <p>Мок-интервью в формате реального собеседования</p>
+                </article>
+                <article className="direction-mentor-card direction-mentor-card-wide">
+                  <img
+                    className="direction-mentor-icon-svg"
+                    src="https://api.iconify.design/tabler:message-chatbot.svg?color=%239c78ff"
+                    alt=""
+                    aria-hidden="true"
+                  />
+                  <p>Поддержка и обратная связь по ключевым задачам</p>
+                </article>
+                <article className="direction-mentor-card direction-mentor-card-wide">
+                  <img
+                    className="direction-mentor-icon-svg"
+                    src="https://api.iconify.design/tabler:rocket.svg?color=%239c78ff"
+                    alt=""
+                    aria-hidden="true"
+                  />
+                  <p>Индивидуальная стратегия быстрого выхода на рынок</p>
+                </article>
+              </div>
+            </section>
+
+            <section className="panel-block mentor-insights">
+              <div className="mentor-insights-top">
+                <article className="mentor-insight-stat">
+                  <div className="mentor-insight-icon-wrap">
+                    <img
+                      className="mentor-insight-icon"
+                      src="https://api.iconify.design/tabler:device-desktop-analytics.svg?color=%2322232d"
+                      alt=""
+                      aria-hidden="true"
+                    />
+                  </div>
+                  <h3>50+ исследований</h3>
+                  <p>проводим ежегодно. На их основе создаем и улучшаем программы</p>
+                </article>
+
+                <article className="mentor-insight-stat">
+                  <div className="mentor-insight-icon-wrap">
+                    <img
+                      className="mentor-insight-icon"
+                      src="https://api.iconify.design/tabler:thumb-up.svg?color=%2322232d"
+                      alt=""
+                      aria-hidden="true"
+                    />
+                  </div>
+                  <h3>900k+ студентов</h3>
+                  <p>получили востребованные профессии и успешно строят карьеру</p>
+                </article>
+
+                <article className="mentor-insight-stat">
+                  <div className="mentor-insight-icon-wrap">
+                    <img
+                      className="mentor-insight-icon"
+                      src="https://api.iconify.design/tabler:school.svg?color=%2322232d"
+                      alt=""
+                      aria-hidden="true"
+                    />
+                  </div>
+                  <h3>70% выпускников</h3>
+                  <p>обратившихся в наш центр карьеры, нашли работу по специальности</p>
+                </article>
+              </div>
+
+              <div className="mentor-insights-bottom">
+                <article className="mentor-support-card">
+                  <h3>Поддержка на всех этапах</h3>
+                  <p>
+                    Наши специалисты помогут разобраться в программе, ответят на вопросы по домашним
+                    работам, решат любые технические сложности и проследят, чтобы вам было
+                    комфортно учиться.
+                  </p>
+                </article>
+
+                <article className="mentor-teachers-card">
+                  <h3>Преподаватели — практики</h3>
+                  <p>
+                    Вас будут учить эксперты из Mail.ru Group, Сбера, Альфа-банка, МегаФона, X5
+                    Retail Group и других топовых компаний. Они поделятся опытом и техниками,
+                    которые каждый день помогают им в работе.
+                  </p>
+                  <div className="mentor-teachers-orbit" aria-hidden="true">
+                    <div className="mentor-orbit-ring" />
+                    <div className="mentor-orbit-ring mentor-orbit-ring-2" />
+                    <div className="mentor-orbit-ring mentor-orbit-ring-3" />
+                    <div className="mentor-teacher-avatar mentor-teacher-avatar-1" />
+                    <div className="mentor-teacher-avatar mentor-teacher-avatar-2" />
+                    <div className="mentor-teacher-avatar mentor-teacher-avatar-3" />
+                    <div className="mentor-teacher-avatar mentor-teacher-avatar-4" />
+                  </div>
+                </article>
+              </div>
+            </section>
 
             <div className="panel-block student-support">
               <h2>Наши ученики никогда не остаются 1 на 1 с проблемой</h2>
@@ -1993,13 +2069,10 @@ function App() {
 
                 <div className="cert-media" aria-hidden="true">
                   <div className="diploma-card diploma-card-blue">
-                    <div className="diploma-title">ДИПЛОМ</div>
+                    <img className="diploma-image" src="/image/diplom_prof.png" alt="ИННОПРОГ ДИПЛОМ" />
                   </div>
                   <div className="diploma-card diploma-card-white">
-                    <div className="diploma-brand">INNOPROG</div>
-                    <div className="diploma-title">ДИПЛОМ</div>
-                    <div className="diploma-line" />
-                    <div className="diploma-line short" />
+                    <img className="diploma-image" src="/image/diplom.png" alt="Диплом" />
                   </div>
                 </div>
               </div>
@@ -2110,7 +2183,7 @@ function App() {
 
               <div className="compare-choice">
                 <span aria-hidden="true">😐</span>
-                <h2>Выбор за тобой</h2>
+                <h2>Выбор за вами</h2>
                 <span aria-hidden="true">😁</span>
               </div>
             </div>

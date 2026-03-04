@@ -661,7 +661,7 @@ a {
   box-shadow: 0 6px 18px rgba(15, 15, 19, 0.12);
   position: relative;
   overflow: hidden;
-  padding: clamp(12px, 1vw, 18px);
+  padding: 0;
 }
 
 .diploma-card-blue {
@@ -698,6 +698,13 @@ a {
 
 .diploma-line.short {
   width: 64%;
+}
+
+.diploma-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
 .reviews-showcase {
@@ -1197,6 +1204,7 @@ a {
 
 .direction-benefits-grid {
   margin-top: 18px;
+  margin-bottom: 12px;
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 14px;
@@ -1205,13 +1213,13 @@ a {
 .direction-benefit-card {
   position: relative;
   overflow: hidden;
-  min-height: 320px;
+  min-height: 250px;
   border-radius: 28px;
-  padding: 28px 22px 26px;
+  padding: 22px 18px 20px;
   background:
-    radial-gradient(72% 58% at 62% 100%, rgba(156, 120, 255, 0.2), transparent 74%),
-    linear-gradient(145deg, #05070d 0%, #07090f 54%, #05070d 100%);
-  border: 1px solid #13161e;
+    radial-gradient(72% 58% at 62% 100%, rgba(156, 120, 255, 0.18), transparent 74%),
+    linear-gradient(145deg, #f7f7fb 0%, #f1f1f8 54%, #ececf5 100%);
+  border: 1px solid #d8d9e5;
 }
 
 .direction-benefit-card h3 {
@@ -1219,35 +1227,35 @@ a {
   max-width: 78%;
   font-size: clamp(28px, 2.2vw, 46px);
   line-height: 1.05;
-  color: #fff;
+  color: #1c1d27;
 }
 
 .direction-benefit-card p {
   margin: 14px 0 0;
   max-width: 72%;
-  color: #7f8898;
+  color: #545868;
   font-size: clamp(18px, 1.15vw, 30px);
   line-height: 1.28;
 }
 
 .direction-benefit-icon {
   position: absolute;
-  right: 14px;
-  bottom: 12px;
-  width: 34%;
+  right: 12px;
+  bottom: 10px;
+  width: 24%;
   aspect-ratio: 1 / 1;
   border-radius: 18px;
   display: grid;
   place-items: center;
   color: #9c78ff;
-  font-size: clamp(84px, 6.2vw, 124px);
+  font-size: clamp(56px, 4.6vw, 90px);
   line-height: 1;
   filter: drop-shadow(0 8px 14px rgba(0, 0, 0, 0.24));
 }
 
 .direction-benefit-icon-img {
-  width: 100%;
-  height: 100%;
+  width: 82%;
+  height: 82%;
   object-fit: contain;
 }
 
@@ -1446,6 +1454,16 @@ a {
   line-height: 1.22;
 }
 
+.direction-mentor-photo {
+  display: block;
+  width: min(100%, 980px);
+  aspect-ratio: 16 / 9;
+  height: auto;
+  margin: 28px auto 0;
+  border-radius: 24px;
+  object-fit: cover;
+}
+
 .direction-mentor-section h3 {
   margin: 46px 0 0;
   text-align: center;
@@ -1499,6 +1517,242 @@ a {
   font-size: clamp(26px, 1.6vw, 36px);
   line-height: 1.18;
   text-align: center;
+}
+
+.mentor-insights {
+  margin-top: 16px;
+  padding: 0;
+  background: transparent;
+}
+
+.mentor-insights-top {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.mentor-insight-stat {
+  display: grid;
+  align-content: start;
+  gap: 12px;
+}
+
+.mentor-insight-icon-wrap {
+  width: 118px;
+  height: 118px;
+  border-radius: 18px;
+  background: #dcdce7;
+  display: grid;
+  place-items: center;
+}
+
+.mentor-insight-icon {
+  width: 70px;
+  height: 70px;
+  object-fit: contain;
+}
+
+.mentor-insight-stat h3 {
+  margin: 0;
+  color: #171822;
+  font-size: clamp(34px, 2.35vw, 58px);
+  line-height: 1;
+}
+
+.mentor-insight-stat p {
+  margin: 0;
+  max-width: 92%;
+  color: #252933;
+  font-size: clamp(20px, 1.3vw, 34px);
+  line-height: 1.25;
+}
+
+.mentor-insights-bottom {
+  margin-top: 18px;
+  display: grid;
+  grid-template-columns: 1fr 1.75fr;
+  gap: 18px;
+}
+
+.mentor-support-card {
+  border-radius: 36px;
+  background: #2b2f40;
+  color: #f5f6fb;
+  padding: 36px 34px;
+}
+
+.mentor-support-card h3 {
+  margin: 0;
+  font-size: clamp(44px, 3.2vw, 72px);
+  line-height: 1.05;
+}
+
+.mentor-support-card p {
+  margin: 24px 0 0;
+  font-size: clamp(22px, 1.5vw, 36px);
+  line-height: 1.28;
+}
+
+.mentor-teachers-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 36px;
+  background:
+    radial-gradient(36% 44% at 70% 80%, rgba(156, 120, 255, 0.24), transparent 80%),
+    #ececf4;
+  padding: 34px 38px;
+  min-height: 470px;
+}
+
+.mentor-teachers-card h3 {
+  margin: 0;
+  max-width: 55%;
+  color: #151720;
+  font-size: clamp(54px, 3.9vw, 82px);
+  line-height: 1.04;
+}
+
+.mentor-teachers-card p {
+  margin: 24px 0 0;
+  max-width: 55%;
+  color: #242832;
+  font-size: clamp(22px, 1.5vw, 36px);
+  line-height: 1.28;
+}
+
+.mentor-teachers-orbit {
+  position: absolute;
+  right: 34px;
+  bottom: 26px;
+  width: 44%;
+  aspect-ratio: 1.18 / 1;
+}
+
+.mentor-orbit-ring {
+  position: absolute;
+  inset: 0;
+  border: 2px solid rgba(126, 93, 232, 0.38);
+  border-radius: 56% 44% 58% 42% / 48% 62% 38% 52%;
+  transform: rotate(14deg);
+}
+
+.mentor-orbit-ring-2 {
+  inset: 9% 8%;
+  transform: rotate(24deg);
+}
+
+.mentor-orbit-ring-3 {
+  inset: 18% 16%;
+  transform: rotate(34deg);
+}
+
+.mentor-teacher-avatar {
+  position: absolute;
+  border-radius: 50%;
+  background-size: cover;
+  background-position: center;
+  border: 2px solid #ececf4;
+}
+
+.mentor-teacher-avatar-1 {
+  width: 112px;
+  height: 112px;
+  left: 10%;
+  top: 16%;
+  background-image: url("/image/office_hourse.jpg");
+}
+
+.mentor-teacher-avatar-2 {
+  width: 176px;
+  height: 176px;
+  right: 8%;
+  top: 2%;
+  background-image: url("/image/python_image_course.png");
+}
+
+.mentor-teacher-avatar-3 {
+  width: 132px;
+  height: 132px;
+  left: 24%;
+  bottom: 4%;
+  background-image: url("/image/python_image_course.png");
+}
+
+.mentor-teacher-avatar-4 {
+  width: 94px;
+  height: 94px;
+  right: 4%;
+  bottom: 22%;
+  background-image: url("/image/office_hourse.jpg");
+}
+
+@media (max-width: 1024px) {
+  .mentor-insights-top {
+    grid-template-columns: 1fr;
+  }
+
+  .mentor-insights-bottom {
+    grid-template-columns: 1fr;
+  }
+
+  .mentor-teachers-card {
+    min-height: 720px;
+  }
+
+  .mentor-teachers-card h3,
+  .mentor-teachers-card p {
+    max-width: 100%;
+  }
+
+  .mentor-teachers-orbit {
+    position: relative;
+    right: auto;
+    bottom: auto;
+    width: min(440px, 90%);
+    margin: 24px auto 0;
+  }
+}
+
+@media (max-width: 680px) {
+  .mentor-insight-icon-wrap {
+    width: 84px;
+    height: 84px;
+    border-radius: 14px;
+  }
+
+  .mentor-insight-icon {
+    width: 50px;
+    height: 50px;
+  }
+
+  .mentor-insight-stat h3 {
+    font-size: clamp(30px, 9vw, 44px);
+  }
+
+  .mentor-insight-stat p {
+    font-size: clamp(18px, 5vw, 24px);
+  }
+
+  .mentor-support-card,
+  .mentor-teachers-card {
+    border-radius: 22px;
+    padding: 20px 18px;
+  }
+
+  .mentor-support-card h3,
+  .mentor-teachers-card h3 {
+    font-size: clamp(36px, 10vw, 52px);
+  }
+
+  .mentor-support-card p,
+  .mentor-teachers-card p {
+    margin-top: 12px;
+    font-size: clamp(18px, 5vw, 24px);
+  }
+
+  .mentor-teachers-card {
+    min-height: auto;
+  }
 }
 
 .direction-skills-section {
@@ -1956,6 +2210,16 @@ a {
   height: 100%;
   min-height: 300px;
   object-fit: cover;
+}
+
+.direction-certificates {
+  margin-top: 18px;
+  margin-bottom: 18px;
+}
+
+.direction-certificates .cert-layout {
+  margin-top: 12px;
+  margin-bottom: 12px;
 }
 
 .direction-program-section {
