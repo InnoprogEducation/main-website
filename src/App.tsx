@@ -47,39 +47,39 @@ type Direction = {
 type DirectionBenefit = {
   title: string;
   text: string;
-  icon: "time" | "diploma" | "internship" | "projects" | "practice" | "installment";
+  icon: "individual" | "mentors" | "diploma" | "platform" | "internship" | "tax";
 };
 
 const directionBenefits: DirectionBenefit[] = [
   {
-    title: "Занятия в удобное время",
-    text: "Никаких жёстких дедлайнов. Доступ к курсу — навсегда!",
-    icon: "time",
+    title: "Индивидуальные занятия",
+    text: "Еженедельные персональные занятия с наставниками для быстрого роста и получения только актуальных навыков",
+    icon: "individual",
   },
   {
-    title: "2 диплома в портфолио",
-    text: "Диплом о профпереподготовке и диплом Eduson — резидента «Сколково».",
+    title: "Преподаватели-практики",
+    text: "Занимайтесь, общаетесь и практикуйтесь с реальными разработчиками. Получаете опыт от профессионалов",
+    icon: "mentors",
+  },
+  {
+    title: "Два диплома",
+    text: "Диплом о профпереподготовке и диплом ИННОПРОГ. Сведения вносятся в государственный реестр РФ",
     icon: "diploma",
   },
   {
+    title: "Обучающая платформа",
+    text: "Закрепляйте полученные навыки на нашей платформе, решая реальные практические задачи",
+    icon: "platform",
+  },
+  {
     title: "Стажировка",
-    text: "Первый опыт работы над реальным проектом в кросс-функциональной команде — уже во время обучения.",
+    text: "По окончании обучения лучших учеников мы рекомендуем нашим партнёрам для прохождения стажировки в IT-компаниях",
     icon: "internship",
   },
   {
-    title: "10 крупных проектов",
-    text: "Готовое портфолио и прикладные навыки по окончании курса.",
-    icon: "projects",
-  },
-  {
-    title: "70% практики",
-    text: "75+ заданий, тренажёры и тесты, интерактивная песочница по Python, чат-боты.",
-    icon: "practice",
-  },
-  {
-    title: "Выгодная рассрочка без %",
-    text: "Старт сразу, оплата — удобными частями.",
-    icon: "installment",
+    title: "Налоговый вычет",
+    text: "По окончании обучения вы сможете оформить налоговый вычет и вернуть 13% от стоимости обучения",
+    icon: "tax",
   },
 ];
 
@@ -486,12 +486,12 @@ const directionProjects: DirectionProject[] = [
 
 function DirectionBenefitIcon({ kind }: { kind: DirectionBenefit["icon"] }) {
   const iconSrcMap: Record<DirectionBenefit["icon"], string> = {
-    time: "https://api.iconify.design/tabler:clock.svg?color=%239c78ff",
+    individual: "https://api.iconify.design/tabler:user-star.svg?color=%239c78ff",
+    mentors: "https://api.iconify.design/tabler:users-group.svg?color=%239c78ff",
     diploma: "https://api.iconify.design/tabler:school.svg?color=%239c78ff",
-    internship: "https://api.iconify.design/tabler:message-circle.svg?color=%239c78ff",
-    projects: "https://api.iconify.design/tabler:chart-histogram.svg?color=%239c78ff",
-    practice: "https://api.iconify.design/tabler:device-laptop.svg?color=%239c78ff",
-    installment: "https://api.iconify.design/tabler:percentage.svg?color=%239c78ff",
+    platform: "https://api.iconify.design/tabler:device-desktop-code.svg?color=%239c78ff",
+    internship: "https://api.iconify.design/tabler:briefcase.svg?color=%239c78ff",
+    tax: "https://api.iconify.design/tabler:receipt-tax.svg?color=%239c78ff",
   };
 
   return <img src={iconSrcMap[kind]} alt="" aria-hidden="true" className="direction-benefit-icon-img" />;
@@ -1152,7 +1152,7 @@ function App() {
               <article className="direction-mentor-card">
                 <img
                   className="direction-mentor-icon-svg"
-                  src="https://api.iconify.design/tabler:player-play-filled.svg?color=%239c78ff"
+                  src="https://api.iconify.design/tabler:calendar-user.svg?color=%239c78ff"
                   alt=""
                   aria-hidden="true"
                 />
@@ -1161,7 +1161,7 @@ function App() {
               <article className="direction-mentor-card">
                 <img
                   className="direction-mentor-icon-svg"
-                  src="https://api.iconify.design/tabler:chart-line.svg?color=%239c78ff"
+                  src="https://api.iconify.design/tabler:file-cv.svg?color=%239c78ff"
                   alt=""
                   aria-hidden="true"
                 />
@@ -1170,7 +1170,7 @@ function App() {
               <article className="direction-mentor-card">
                 <img
                   className="direction-mentor-icon-svg"
-                  src="https://api.iconify.design/tabler:user-square-rounded.svg?color=%239c78ff"
+                  src="https://api.iconify.design/tabler:users.svg?color=%239c78ff"
                   alt=""
                   aria-hidden="true"
                 />
@@ -1179,7 +1179,7 @@ function App() {
               <article className="direction-mentor-card direction-mentor-card-wide">
                 <img
                   className="direction-mentor-icon-svg"
-                  src="https://api.iconify.design/tabler:message-chatbot.svg?color=%239c78ff"
+                  src="https://api.iconify.design/tabler:messages.svg?color=%239c78ff"
                   alt=""
                   aria-hidden="true"
                 />
@@ -1806,7 +1806,7 @@ function App() {
         <div className="intro-blocks panel-block">
           <div className="hero" id="about">
             <h1>ИННОПРОГ</h1>
-            <p>Обучение программированию с фокусом на практику и результат</p>
+            <p>Обучаем программированию с упором на практику и персональное обучение</p>
           </div>
         </div>
 
@@ -1862,7 +1862,7 @@ function App() {
                     <div className="direction-content">
                       <h3>{item.name}</h3>
                       <div className="direction-meta">
-                        <span className="meta-pill">10 месяцев</span>
+                        <span className="meta-pill">≈10 месяцев</span>
                         <span className="meta-pill meta-pill-accent">Стажировка</span>
                       </div>
                     </div>
@@ -1889,12 +1889,11 @@ function App() {
               </div>
               <div className="direction-mentor-cloud direction-mentor-cloud-right-bottom">Поддержка</div>
 
-              <div className="direction-mentor-pro">Тариф PRO</div>
+              <div className="direction-mentor-pro">Во всех тарифах</div>
 
               <h2>Личный ментор на всём пути обучения</h2>
               <p>
-                Вас будет сопровождать эксперт из индустрии, который помог многим начинающим
-                специалистам.
+                На протяжении всего обучения вас будет сопровождать эксперт из индустрии, который помог многим начинающим специалистам
               </p>
 
               <img
@@ -1903,53 +1902,53 @@ function App() {
                 alt="Ментор на индивидуальной консультации"
               />
 
-              <h3>Вас ждёт 126 индивидуальных онлайн-встреч:</h3>
+              <h3>Вас ждет более 40 персональных онлайн встреч с наставником:</h3>
 
               <div className="direction-mentor-cards">
                 <article className="direction-mentor-card">
                   <img
                     className="direction-mentor-icon-svg"
-                    src="https://api.iconify.design/tabler:player-play-filled.svg?color=%239c78ff"
+                    src="https://api.iconify.design/tabler:calendar-user.svg?color=%239c78ff"
                     alt=""
                     aria-hidden="true"
                   />
-                  <p>2 консультации по ходу обучения</p>
+                  <p>Не менее одной консультации с наставником каждую неделю</p>
                 </article>
                 <article className="direction-mentor-card">
                   <img
                     className="direction-mentor-icon-svg"
-                    src="https://api.iconify.design/tabler:chart-line.svg?color=%239c78ff"
+                    src="https://api.iconify.design/tabler:users.svg?color=%239c78ff"
                     alt=""
                     aria-hidden="true"
                   />
-                  <p>Карьерная сессия с разбором резюме</p>
+                  <p>Индивидуальный план обучения под ваши задачи и цели</p>
                 </article>
                 <article className="direction-mentor-card">
                   <img
                     className="direction-mentor-icon-svg"
-                    src="https://api.iconify.design/tabler:user-square-rounded.svg?color=%239c78ff"
+                    src="https://api.iconify.design/tabler:message-circle-question.svg?color=%239c78ff"
                     alt=""
                     aria-hidden="true"
                   />
-                  <p>Мок-интервью в формате реального собеседования</p>
+                  <p>Личный чат с наставником для вопросов вне уроков</p>
                 </article>
                 <article className="direction-mentor-card direction-mentor-card-wide">
                   <img
                     className="direction-mentor-icon-svg"
-                    src="https://api.iconify.design/tabler:message-chatbot.svg?color=%239c78ff"
+                    src="https://api.iconify.design/tabler:messages.svg?color=%239c78ff"
                     alt=""
                     aria-hidden="true"
                   />
-                  <p>Поддержка и обратная связь по ключевым задачам</p>
+                  <p>Поддержка и помощь по всем организационным вопросам — вам не нужно переживать о том, что, где и когда</p>
                 </article>
                 <article className="direction-mentor-card direction-mentor-card-wide">
                   <img
                     className="direction-mentor-icon-svg"
-                    src="https://api.iconify.design/tabler:rocket.svg?color=%239c78ff"
+                    src="https://api.iconify.design/tabler:target-arrow.svg?color=%239c78ff"
                     alt=""
                     aria-hidden="true"
                   />
-                  <p>Индивидуальная стратегия быстрого выхода на рынок</p>
+                  <p>Мок-интервью в формате реального собеседования для успешного выхода на стажировку</p>
                 </article>
               </div>
             </section>
@@ -1965,8 +1964,8 @@ function App() {
                       aria-hidden="true"
                     />
                   </div>
-                  <h3>50+ исследований</h3>
-                  <p>проводим ежегодно. На их основе создаем и улучшаем программы</p>
+                  <h3>450+ студентов ежегодно</h3>
+                  <p>достигают своих целей и становятся специалистами в различных ИТ направлениях.</p>
                 </article>
 
                 <article className="mentor-insight-stat">
@@ -1978,8 +1977,8 @@ function App() {
                       aria-hidden="true"
                     />
                   </div>
-                  <h3>900k+ студентов</h3>
-                  <p>получили востребованные профессии и успешно строят карьеру</p>
+                  <h3>18000+ персональных занятий</h3>
+                  <p>наши преподаватели проводят ежегодно со студентами.</p>
                 </article>
 
                 <article className="mentor-insight-stat">
@@ -1991,27 +1990,27 @@ function App() {
                       aria-hidden="true"
                     />
                   </div>
-                  <h3>70% выпускников</h3>
-                  <p>обратившихся в наш центр карьеры, нашли работу по специальности</p>
+                  <h3>72% выпускников</h3>
+                  <p>успешно начинают карьеру и становятся востребованными специалистами.</p>
                 </article>
               </div>
 
               <div className="mentor-insights-bottom">
                 <article className="mentor-support-card">
-                  <h3>Поддержка на всех этапах</h3>
+                  <h3>Поддержка на каждом этапе обучения</h3>
                   <p>
-                    Наши специалисты помогут разобраться в программе, ответят на вопросы по домашним
-                    работам, решат любые технические сложности и проследят, чтобы вам было
-                    комфортно учиться.
+                    Наши специалисты помогают разобраться в программе обучения, отвечают на вопросы
+                    по домашним работам, оперативно решают технические сложности и делают всё, чтобы
+                    обучение проходило комфортно.
                   </p>
                 </article>
 
                 <article className="mentor-teachers-card">
                   <h3>Преподаватели — практики</h3>
                   <p>
-                    Вас будут учить эксперты из Mail.ru Group, Сбера, Альфа-банка, МегаФона, X5
-                    Retail Group и других топовых компаний. Они поделятся опытом и техниками,
-                    которые каждый день помогают им в работе.
+                    Обучение проводят эксперты из средних и крупных технологических компаний: Сбер,
+                    Яндекс, МТС, Точка, РЖД и т. д. Они делятся практическим опытом и методами,
+                    которые применяют в своей работе каждый день.
                   </p>
                   <div className="mentor-teachers-orbit" aria-hidden="true">
                     <div className="mentor-orbit-ring" />
@@ -2038,19 +2037,29 @@ function App() {
                 <article className="support-person support-teacher">
                   <div className="support-photo teacher-photo" />
                   <h3>Преподаватель</h3>
-                  <p>Обсуждайте любые вопросы ежедневно</p>
+                  <p>
+                    Если возникнут сложности с практикой или домашними заданиями, преподаватель
+                    поможет разобраться и подскажет решение.
+                  </p>
                 </article>
 
                 <article className="support-person support-curator">
                   <div className="support-photo curator-photo" />
                   <h3>Куратор</h3>
-                  <p>Настраивайте график и темп обучения под себя</p>
+                  <p>
+                    Если возникают сложности с расписанием занятий, куратор поможет найти удобное
+                    решение и скорректировать темп обучения под ваш график.
+                  </p>
                 </article>
 
                 <article className="support-platform">
                   <div className="support-photo student-photo" />
                   <h3>Платформа</h3>
-                  <p>Закрепите полученные знания на нашей платформе</p>
+                  <p>
+                    Выполняйте домашние задания и закрепляйте навыки на нашей платформе. Материал и
+                    задания построены так, чтобы сложные темы становились понятными и применимыми на
+                    практике.
+                  </p>
                 </article>
               </div>
             </div>

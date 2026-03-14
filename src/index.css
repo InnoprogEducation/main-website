@@ -1236,12 +1236,12 @@ a {
   color: #1c1d27;
 }
 
-.direction-benefit-card p {
+.learning-panel .direction-benefit-card p {
   margin: 14px 0 0;
   max-width: 72%;
   color: #545868;
-  font-size: clamp(18px, 1.15vw, 30px);
-  line-height: 1.28;
+  font-size: clamp(12px, 0.8vw, 15px) !important;
+  line-height: 1.25 !important;
 }
 
 .direction-benefit-icon {
@@ -1708,6 +1708,13 @@ a {
 .learning-panel .panel-block a {
   font-size: clamp(18px, 1.3vw, 26px) !important;
   line-height: 1.34 !important;
+}
+
+@media (min-width: 1025px) {
+  .learning-panel .panel-block.direction-benefits-grid .direction-benefit-card p {
+    font-size: clamp(20px, 0.8vw, 25px) !important;
+    line-height: 1.25 !important;
+  }
 }
 
 /* preserve intentionally large display text */
