@@ -516,6 +516,23 @@ const teachers = [
   "Акура Шуту",
 ];
 
+function TeachersSection({ className }: { className: string }) {
+  return (
+    <section className={className}>
+      <h2>Наши преподаватели</h2>
+      <div className="teacher-grid">
+        {teachers.map((teacher) => (
+          <article className="teacher-card" key={teacher}>
+            <div className="avatar" />
+            <h3>{teacher}</h3>
+            <p>Практикующий специалист</p>
+          </article>
+        ))}
+      </div>
+    </section>
+  );
+}
+
 type ReviewStory = {
   slug: string;
   name: string;
@@ -648,8 +665,8 @@ function App() {
   const [openProgramModuleIndex, setOpenProgramModuleIndex] = useState(0);
   const [openDirectionFaqIndexes, setOpenDirectionFaqIndexes] = useState<number[]>([]);
   const [directionConsent, setDirectionConsent] = useState(false);
-  const suppressReviewClickRef = useRef(false);
   const shouldScrollToReviewsRef = useRef(false);
+  const reviewPressedSlugRef = useRef<string | null>(null);
   const directionProjectsTrackRef = useRef<HTMLDivElement | null>(null);
   const directionProjectPointerIdRef = useRef<number | null>(null);
   const directionProjectStartXRef = useRef(0);
@@ -782,6 +799,27 @@ function App() {
     return () => window.removeEventListener("keydown", onKeyDown);
   }, [isResumeModalOpen]);
 
+  useEffect(() => {
+    if (!activeReview) {
+      return;
+    }
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        closeReviewDetails();
+      }
+    };
+
+    window.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener("keydown", onKeyDown);
+    };
+  }, [activeReview]);
+
   const goPrevReview = () => {
     setReviewIndex((prev) => (prev === 0 ? maxReviewIndex : prev - 1));
   };
@@ -793,35 +831,39 @@ function App() {
   const handleReviewsPointerDown = (event: PointerEvent<HTMLDivElement>) => {
     event.currentTarget.setPointerCapture(event.pointerId);
     setDragStartX(event.clientX);
-    suppressReviewClickRef.current = false;
+    if (event.target instanceof HTMLElement) {
+      reviewPressedSlugRef.current = event.target.closest<HTMLElement>("[data-review-slug]")?.dataset.reviewSlug ?? null;
+    } else {
+      reviewPressedSlugRef.current = null;
+    }
   };
 
   const handleReviewsPointerUp = (event: PointerEvent<HTMLDivElement>) => {
+    if (event.currentTarget.hasPointerCapture(event.pointerId)) {
+      event.currentTarget.releasePointerCapture(event.pointerId);
+    }
+
     if (dragStartX === null) {
+      reviewPressedSlugRef.current = null;
       return;
     }
 
     const deltaX = event.clientX - dragStartX;
     if (deltaX > 50) {
       goPrevReview();
-      suppressReviewClickRef.current = true;
     } else if (deltaX < -50) {
       goNextReview();
-      suppressReviewClickRef.current = true;
+    } else if (reviewPressedSlugRef.current) {
+      openReviewDetails(reviewPressedSlugRef.current);
     }
 
     setDragStartX(null);
+    reviewPressedSlugRef.current = null;
   };
 
   const openReviewDetails = (slug: string) => {
-    if (suppressReviewClickRef.current) {
-      suppressReviewClickRef.current = false;
-      return;
-    }
-
     window.history.pushState({}, "", `/reviews/${slug}`);
     setActiveReviewSlug(slug);
-    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const scrollDirectionProjects = (direction: 1 | -1) => {
@@ -886,13 +928,14 @@ function App() {
     setActiveDirectionSlug(slug);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
-
-  if (activeReview) {
-    const relatedStories = reviewStories.filter((story) => story.slug !== activeReview.slug).slice(0, 4);
-
-    return (
-      <div className="site">
-        <main className="section panel review-story-page">
+  const relatedStories = activeReview
+    ? reviewStories.filter((story) => story.slug !== activeReview.slug).slice(0, 4)
+    : [];
+  const reviewDetailsModal = activeReview ? (
+    <div className="review-story-modal" role="dialog" aria-modal="true" aria-labelledby="review-story-title">
+      <div className="review-story-backdrop" onClick={closeReviewDetails} />
+      <div className="review-story-dialog" onClick={(event) => event.stopPropagation()}>
+        <main className="section panel review-story-page review-story-page-modal">
           <div className="review-story-topnav">
             <button type="button" className="review-back-btn" onClick={closeReviewDetails}>
               ← Назад к отзывам
@@ -903,7 +946,7 @@ function App() {
           <header className="review-story-hero">
             <div className="review-story-copy">
               <div className="review-label">{activeReview.name}</div>
-              <h1>{activeReview.title}</h1>
+              <h1 id="review-story-title">{activeReview.title}</h1>
               <p>{activeReview.lead}</p>
               <div className="review-story-course">Курс: {activeReview.course}</div>
             </div>
@@ -995,8 +1038,8 @@ function App() {
           </section>
         </main>
       </div>
-    );
-  }
+    </div>
+  ) : null;
 
   if (activeDirection) {
     return (
@@ -1477,18 +1520,7 @@ function App() {
 
           </section>
 
-          <section className="direction-page-teachers mentors">
-            <h2>Наши преподаватели</h2>
-            <div className="teacher-grid">
-              {teachers.map((teacher) => (
-                <article className="teacher-card" key={teacher}>
-                  <div className="avatar" />
-                  <h3>{teacher}</h3>
-                  <p>Практикующий специалист</p>
-                </article>
-              ))}
-            </div>
-          </section>
+          <TeachersSection className="direction-page-teachers mentors" />
 
           <section className="direction-graduate-reviews">
             <h2>
@@ -2025,6 +2057,8 @@ function App() {
               </div>
             </section>
 
+            <TeachersSection className="panel-block direction-page-teachers mentors" />
+
             <div className="panel-block student-support">
               <h2>Наши ученики никогда не остаются 1 на 1 с проблемой</h2>
               <div className="support-layout">
@@ -2113,7 +2147,10 @@ function App() {
                   className="reviews-slider"
                   onPointerDown={handleReviewsPointerDown}
                   onPointerUp={handleReviewsPointerUp}
-                  onPointerCancel={() => setDragStartX(null)}
+                  onPointerCancel={() => {
+                    setDragStartX(null);
+                    reviewPressedSlugRef.current = null;
+                  }}
                 >
                   <div
                     className="reviews-track"
@@ -2126,9 +2163,9 @@ function App() {
                       <article
                         className="review-story"
                         key={story.slug}
+                        data-review-slug={story.slug}
                         role="button"
                         tabIndex={0}
-                        onClick={() => openReviewDetails(story.slug)}
                         onKeyDown={(event) => {
                           if (event.key === "Enter" || event.key === " ") {
                             event.preventDefault();
@@ -2267,6 +2304,7 @@ function App() {
         )}
       </section>
 
+      {reviewDetailsModal}
       {siteFooter}
     </div>
   );
